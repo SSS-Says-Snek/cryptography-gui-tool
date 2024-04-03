@@ -1,7 +1,10 @@
 package com.bmcomis2018.cryptgui;
 
+import com.bmcomis2018.cryptgui.algos.CaesarCipher;
+import com.bmcomis2018.cryptgui.algos.SymmetricAlgo;
+import com.bmcomis2018.cryptgui.gui.*;
+
 import com.formdev.flatlaf.FlatLightLaf;
-import java.awt.*;
 import javax.swing.*;
 
 public class Main
@@ -14,18 +17,14 @@ public class Main
         JFrame frame = new JFrame();
         JTabbedPane cryptAlgorithmOptions = new JTabbedPane();
 
-        JPanel caesarCipherPanel = new JPanel(new BorderLayout());
-        JPanel encryptPanel = new JPanel();
-        JPanel decryptPanel = new JPanel();
-
-        caesarCipherPanel.add(encryptPanel, BorderLayout.WEST);
-        caesarCipherPanel.add(decryptPanel, BorderLayout.EAST);
-        cryptAlgorithmOptions.addTab("Sussy", caesarCipherPanel);
+        SymmetricAlgoGui<Integer> caesar = new SymmetricAlgoGui<Integer>(new CaesarCipher());
+        cryptAlgorithmOptions.addTab("Caesar Cipher", caesar.getMainPanel());
 
         // Boilerplate
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(cryptAlgorithmOptions);
         frame.setSize(1280, 720);
         frame.setVisible(true);
+        frame.setLocationRelativeTo(null);
     }
 }
