@@ -21,11 +21,14 @@ public class SymmetricAlgoGui<T> {
     private JTextArea ciphertext = new JTextArea(10, 10);
     private JButton decryptGoButton = new JButton("Decrypt!");
 
+    private JFrame parent;
+
     // Actual encryption/decryption algorithm
     private SymmetricAlgo<T> cipher;
 
-    public SymmetricAlgoGui(SymmetricAlgo<T> cipher) {
+    public SymmetricAlgoGui(SymmetricAlgo<T> cipher, JFrame parent) {
         this.cipher = cipher;
+        this.parent = parent;
         mainPanel.setLayout(new GridLayout());
 
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
@@ -52,6 +55,10 @@ public class SymmetricAlgoGui<T> {
 
     private void addPadding(JComponent c) {
         c.setBorder(new EmptyBorder(10, 10, 10, 10));
+    }
+
+    private void message(String message) {
+        JOptionPane.showMessageDialog(parent, message);
     }
 
     private void setUpEncryptionGui() {
@@ -119,11 +126,15 @@ public class SymmetricAlgoGui<T> {
     private void encrypt() {
         char[] result = cipher.encrypt(plaintext.getText().toCharArray());
         ciphertext.setText(new String(result));
+
+        message("Encrypted message!");
     }
 
     private void decrypt() {
         char[] result = cipher.decrypt(ciphertext.getText().toCharArray());
         plaintext.setText(new String(result));
+
+        message("Decrypted message!");
     }
 
     private void setKey() {
@@ -131,6 +142,7 @@ public class SymmetricAlgoGui<T> {
         try {
             cipher.setKey(cipher.validateKey(potentialKey));
         } catch (NumberFormatException e) {
+            message("Invalid key (You suck)");
             keyArea.setText("");
             return;
         }
