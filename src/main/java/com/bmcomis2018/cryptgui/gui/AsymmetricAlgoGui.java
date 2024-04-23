@@ -5,8 +5,8 @@ import com.bmcomis2018.cryptgui.algos.Algo;
 import java.awt.*;
 import javax.swing.*;
 
-public class SymmetricAlgoGui<T> extends AlgoGui<T> {
-    public SymmetricAlgoGui(Algo<T> cipher, JFrame parent) {
+public class AsymmetricAlgoGui<T> extends AlgoGui<T> {
+    public AsymmetricAlgoGui(Algo<T> cipher, JFrame parent) {
         super(cipher, parent);
 
         setUpEncryptionGui();

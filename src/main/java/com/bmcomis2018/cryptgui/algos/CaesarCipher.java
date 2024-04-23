@@ -2,7 +2,7 @@ package com.bmcomis2018.cryptgui.algos;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class CaesarCipher implements SymmetricAlgo<Integer> {
+public class CaesarCipher implements Algo<Integer> {
     private int key;
 
     public CaesarCipher() {
@@ -22,7 +22,7 @@ public class CaesarCipher implements SymmetricAlgo<Integer> {
         for (int i = 0; i < plaintext.length; i++) {
             char inputByte = plaintext[i];
             if (65 <= inputByte && inputByte <= 90) {
-                inputByte = (char)((inputByte - 97 + key) % 26 + 65);
+                inputByte = (char)((inputByte - 65 + key) % 26 + 65);
             } else if (97 <= inputByte && inputByte <= 122) {
                 inputByte = (char)((inputByte - 97 + key) % 26 + 97);
             }
@@ -38,9 +38,9 @@ public class CaesarCipher implements SymmetricAlgo<Integer> {
         for (int i = 0; i < ciphertext.length; i++) {
             char inputByte = ciphertext[i];
             if (65 <= inputByte && inputByte <= 90) {
-                inputByte = (char)((inputByte - 97 - key) % 26 + 65);
+                inputByte = (char)(Math.floorMod(inputByte - 65 - key, 26) + 65);
             } else if (97 <= inputByte && inputByte <= 122) {
-                inputByte = (char)((inputByte - 97 - key) % 26 + 97);
+                inputByte = (char)(Math.floorMod(inputByte - 97 - key, 26) + 97);
             }
             result[i] = inputByte;
         }
