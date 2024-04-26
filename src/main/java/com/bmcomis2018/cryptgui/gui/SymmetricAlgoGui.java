@@ -1,48 +1,35 @@
 package com.bmcomis2018.cryptgui.gui;
 
-import com.bmcomis2018.cryptgui.algos.Algo;
+import com.bmcomis2018.cryptgui.algos.SymmetricAlgo;
 
-import java.awt.*;
 import javax.swing.*;
 
 public class SymmetricAlgoGui<T> extends AlgoGui<T> {
-    public SymmetricAlgoGui(Algo<T> cipher, JFrame parent) {
+    private SymmetricAlgo<T> symmetricCipher;
+
+    public SymmetricAlgoGui(SymmetricAlgo<T> cipher, JFrame parent) {
         super(cipher, parent);
+        symmetricCipher = cipher;
 
-        setUpEncryptionGui();
         setUpKeyGenGui();
-        setUpDecryptionGui();
-
-        mainPanel.add(leftPanel);
         mainPanel.add(centerPanel);
-        mainPanel.add(rightPanel);
     }
 
     @Override
-    public void setUpKeyGenGui() {
-        JLabel keyGenLabel = titleLabel("Key Generation");
-        centerPanel.add(keyGenLabel);
+    public void setKey() {
+        String potentialKey = keyArea0.getText();
+        try {
+            symmetricCipher.setKey(symmetricCipher.validateKey(potentialKey)); // Skull
+        } catch (NumberFormatException e) {
+            message("Invalid key (You suck)");
+            keyArea0.setText("");
+            return;
+        }
+    }
 
-        keyArea.setLineWrap(true);
-        JScrollPane keyScroll = new JScrollPane(keyArea);
-        addPadding(keyScroll);
-        centerPanel.add(keyScroll);
-
-        JPanel buttons = new JPanel();
-        BoxLayout buttonsLayout = new BoxLayout(buttons, BoxLayout.X_AXIS);
-        buttons.setLayout(buttonsLayout);
-
-        JButton goButton = new JButton("Set Key");
-        goButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-        goButton.addActionListener(event -> setKey());
-        buttons.add(goButton);
-
-        buttons.add(Box.createRigidArea(new Dimension(10, 0)));
-        JButton generateRandomButton = new JButton("Generate Random!");
-        generateRandomButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-        generateRandomButton.addActionListener(event -> generateKey());
-        buttons.add(generateRandomButton);
-
-        centerPanel.add(buttons);
+    @Override
+    public void generateKey() {
+        cipher.generateKey();
+        keyArea0.setText(String.valueOf(symmetricCipher.getKey()));
     }
 }

@@ -1,12 +1,8 @@
 package com.bmcomis2018.cryptgui.algos;
 
-public interface Algo<T> { // T is the type of the key (int, char[])
-    public void setKey(T key); 
-    public T getKey();
-
+public interface Algo { // T is the type of the key (int, char[])
     public char[] encrypt(char[] plaintext);
     public char[] decrypt(char[] ciphertext);
 
-    public T validateKey(String key);
     public void generateKey();
 }

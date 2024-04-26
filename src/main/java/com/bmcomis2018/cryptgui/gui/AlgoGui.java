@@ -7,33 +7,38 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 public abstract class AlgoGui<T> {
-    public JPanel mainPanel = new JPanel();
+    protected JPanel mainPanel = new JPanel();
 
-    public JPanel leftPanel = new JPanel();
-    public JPanel centerPanel = new JPanel();
-    public JPanel rightPanel = new JPanel();
+    protected JPanel leftPanel = new JPanel();
+    protected JPanel centerPanel = new JPanel();
+    protected JPanel rightPanel = new JPanel();
 
-    public JTextArea plaintext = new JTextArea();
-    public JButton encryptGoButton = new JButton("Encrypt!");
+    protected JTextArea plaintext = new JTextArea();
+    protected JTextArea ciphertext = new JTextArea(10, 10);
 
-    public JTextArea keyArea = new JTextArea(1, 10);
-
-    public JTextArea ciphertext = new JTextArea(10, 10);
-    public JButton decryptGoButton = new JButton("Decrypt!");
+    protected JButton goButton = new JButton("Set Key");
 
     public JFrame parent;
 
-    // Actual encryption/decryption algorithm
-    public Algo<T> cipher;
+    protected JTextArea keyArea0 = new JTextArea();
 
-    public AlgoGui(Algo<T> cipher, JFrame parent) {
-        this.cipher = cipher;
+    // Actual encryption/decryption algorithm
+    public Algo cipher;
+
+    public AlgoGui(Algo cipher, JFrame parent) {
         this.parent = parent;
+        this.cipher = cipher;
         mainPanel.setLayout(new GridLayout());
 
         leftPanel.setLayout(new BoxLayout(leftPanel, BoxLayout.Y_AXIS));
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
         rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+
+        setUpEncryptionGui();
+        setUpDecryptionGui();
+
+        mainPanel.add(leftPanel);
+        mainPanel.add(rightPanel);
     }
 
     public JLabel titleLabel(String text) {
@@ -53,38 +58,70 @@ public abstract class AlgoGui<T> {
         JOptionPane.showMessageDialog(parent, message);
     }
 
+    public abstract void setKey();
+    public abstract void generateKey();
+
     public void setUpEncryptionGui() {
         JLabel encryptLabel = titleLabel("Plaintext");
         leftPanel.add(encryptLabel);
 
+
+        plaintext.setLineWrap(true);
         JScrollPane inputScroll = new JScrollPane(plaintext);
         inputScroll.setAlignmentX(JComponent.CENTER_ALIGNMENT);
         addPadding(inputScroll);
         leftPanel.add(inputScroll);
 
+        JButton encryptGoButton = new JButton("Encrypt!");
         encryptGoButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
         encryptGoButton.addActionListener(event -> encrypt());
 
         leftPanel.add(encryptGoButton);
     }
 
-    public abstract void setUpKeyGenGui();
+    public void setUpKeyGenGui() {
+        JLabel keyGenLabel = titleLabel("Key Generation");
+        centerPanel.add(keyGenLabel);
+
+        // Setup encryption
+        keyArea0.setLineWrap(true);
+        JScrollPane keyScroll = new JScrollPane(keyArea0);
+        addPadding(keyScroll);
+        centerPanel.add(keyScroll);
+
+        JPanel buttons = new JPanel();
+        BoxLayout buttonsLayout = new BoxLayout(buttons, BoxLayout.X_AXIS);
+        buttons.setLayout(buttonsLayout);
+
+        goButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+        goButton.addActionListener(event -> setKey());
+        buttons.add(goButton);
+
+        buttons.add(Box.createRigidArea(new Dimension(10, 0)));
+        JButton generateRandomButton = new JButton("Generate Random!");
+        generateRandomButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+        generateRandomButton.addActionListener(event -> generateKey());
+        buttons.add(generateRandomButton);
+
+        centerPanel.add(buttons);
+    }
 
     public void setUpDecryptionGui() {
         JLabel decryptLabel = titleLabel("Ciphertext");
         rightPanel.add(decryptLabel);
 
+        ciphertext.setLineWrap(true);
         JScrollPane outputScroll = new JScrollPane(ciphertext);
         outputScroll.setAlignmentX(JComponent.CENTER_ALIGNMENT);
         addPadding(outputScroll);
         rightPanel.add(outputScroll);
 
+        JButton decryptGoButton = new JButton("Decrypt!");
         decryptGoButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
         decryptGoButton.addActionListener(event -> decrypt());
 
         rightPanel.add(decryptGoButton);
     }
-
 
     public JPanel getMainPanel() {
         return mainPanel;
@@ -104,19 +141,4 @@ public abstract class AlgoGui<T> {
         message("Decrypted message!");
     }
 
-    public void setKey() {
-        String potentialKey = keyArea.getText();
-        try {
-            cipher.setKey(cipher.validateKey(potentialKey));
-        } catch (NumberFormatException e) {
-            message("Invalid key (You suck)");
-            keyArea.setText("");
-            return;
-        }
-    }
-
-    public void generateKey() {
-        cipher.generateKey();
-        keyArea.setText(String.valueOf(cipher.getKey()));
-    }
 }

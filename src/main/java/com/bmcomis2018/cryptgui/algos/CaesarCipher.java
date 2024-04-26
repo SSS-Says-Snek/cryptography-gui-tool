@@ -2,7 +2,7 @@ package com.bmcomis2018.cryptgui.algos;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class CaesarCipher implements Algo<Integer> {
+public class CaesarCipher implements SymmetricAlgo<Integer> {
     private int key;
 
     public CaesarCipher() {

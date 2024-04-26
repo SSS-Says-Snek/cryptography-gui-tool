@@ -1,20 +1,15 @@
 package com.bmcomis2018.cryptgui.algos;
+
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Collections;
 
-public class RSA {
-    public static BigInteger e = new BigInteger("65537");
-
-    private BigInteger p;
-    private BigInteger q;
-
-    private BigInteger d;
-
+public class RSA implements AsymmetricAlgo<BigInteger> {
     private BigInteger n;
     private int keysize;
+
+    private BigInteger e = BigInteger.valueOf(65537);
+    private BigInteger d;
 
     private SecureRandom rand;
 
@@ -24,8 +19,8 @@ public class RSA {
     }
 
     public void generateKey() {
-        p = new BigInteger(keysize, 128, rand);
-        q = new BigInteger(keysize, 128, rand);
+        BigInteger p = new BigInteger(keysize, 128, rand);
+        BigInteger q = new BigInteger(keysize, 128, rand);
 
         BigInteger pmin1 = p.subtract(BigInteger.ONE);
         BigInteger qmin1 = q.subtract(BigInteger.ONE);
@@ -37,19 +32,38 @@ public class RSA {
         if (d.compareTo(BigInteger.ZERO) == -1) {
             d = totn.add(d);
         }
+
     }
 
     public char[] encrypt(char[] plaintext) {
-        BigInteger message = OS2IP(plaintext);
+        BigInteger message = PrimitiveEnc.OS2IP(plaintext);
         BigInteger ciphertext = squareAndMult(message, e, n);
         return Base64.getEncoder().encodeToString(ciphertext.toByteArray()).toCharArray();
     }
 
     public char[] decrypt(char[] ciphertext) {
         BigInteger cipherMessage = new BigInteger(Base64.getDecoder().decode(new String(ciphertext).getBytes()));
-        return I2OSP(squareAndMult(cipherMessage, d, n));
+        return PrimitiveEnc.I2OSP(squareAndMult(cipherMessage, d, n));
     }
 
+    // public AsymmetricKey<BigInteger> validateKey(String e, String d) { // Yeah no no validation plz
+    //     return new AsymmetricKey<BigInteger>();
+    // }
+
+    public void setKey(BigInteger e, BigInteger d) {
+        this.e = e;
+        this.d = d;
+    }
+
+    public BigInteger getEncryptionKey() {
+        return e;
+    }
+
+    public BigInteger getDecryptionKey() {
+        return d;
+    }
+
+    // RSA AND CRYPTOGRAPHIC STUFF
     private static BigInteger gcd(BigInteger a, BigInteger b) {
         BigInteger temp;
         while (b != BigInteger.ZERO) {
@@ -95,35 +109,5 @@ public class RSA {
             b = b.divide(BigInteger.TWO);
         }
         return a.multiply(y).mod(n);
-    }
-
-    private static BigInteger OS2IP(char[] os) {
-        BigInteger result = BigInteger.ZERO;
-        for (int i = 0; i < os.length; i++) {
-            char c = os[os.length - 1 - i]; // Endianness i forgor
-            result = result.add(BigInteger.valueOf(c).multiply(BigInteger.valueOf(256).pow(i)));
-        }
-        return result;
-    }
-
-    private static char[] I2OSP(BigInteger input) {
-        ArrayList<Character> result = new ArrayList<>();
-        while (input.compareTo(BigInteger.ZERO) == 1) {
-            result.add((char)input.mod(BigInteger.valueOf(256)).intValue());
-            input = input.shiftRight(8);
-        }
-        Collections.reverse(result);
-
-        return result.toString().toCharArray();
-    }
-
-    public static void main(String[] args) {
-        char[] a = "SHGDPSGHSSDGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGPDGSDG".toCharArray();
-        RSA thing = new RSA(2048);
-        thing.generateKey();
-
-        char[] enc = thing.encrypt(a);
-        char[] dec = thing.decrypt(enc);
-        System.out.println("Dec " + new String(dec));
     }
 }
