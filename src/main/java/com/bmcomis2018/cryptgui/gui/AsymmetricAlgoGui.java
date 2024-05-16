@@ -18,6 +18,7 @@ public class AsymmetricAlgoGui<T> extends AlgoGui<T> {
 
     @Override
     public void setKey() { // TODO
+        keyIsSet = true;
         return;
     }
 
@@ -32,6 +33,7 @@ public class AsymmetricAlgoGui<T> extends AlgoGui<T> {
         keyArea1.setText(decryptKey.toString());
 
         message("Key generated!");
+        keyIsSet = true;
     }
 
     @Override

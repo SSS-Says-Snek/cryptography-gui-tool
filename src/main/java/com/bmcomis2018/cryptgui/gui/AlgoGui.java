@@ -25,6 +25,8 @@ public abstract class AlgoGui<T> {
     // Actual encryption/decryption algorithm
     public Algo cipher;
 
+    protected boolean keyIsSet = false;
+
     public AlgoGui(Algo cipher, JFrame parent) {
         this.parent = parent;
         this.cipher = cipher;
@@ -128,6 +130,11 @@ public abstract class AlgoGui<T> {
     }
 
     public void encrypt() {
+        if (!keyIsSet) {
+            message("Key not set!");
+            return;
+        }
+
         char[] result = cipher.encrypt(plaintext.getText().toCharArray());
         ciphertext.setText(new String(result));
 
@@ -135,7 +142,17 @@ public abstract class AlgoGui<T> {
     }
 
     public void decrypt() {
-        char[] result = cipher.decrypt(ciphertext.getText().toCharArray());
+        char[] text = ciphertext.getText().toCharArray();
+        if (!keyIsSet) {
+            message("Key not set!");
+            return;
+        }
+        if (text.length == 0) {
+            message("Nothing to decrypt!");
+            return;
+        }
+
+        char[] result = cipher.decrypt(text);
         plaintext.setText(new String(result));
 
         message("Decrypted message!");

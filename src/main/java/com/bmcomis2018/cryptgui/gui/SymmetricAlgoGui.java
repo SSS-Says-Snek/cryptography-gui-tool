@@ -25,11 +25,16 @@ public class SymmetricAlgoGui<T> extends AlgoGui<T> {
             keyArea0.setText("");
             return;
         }
+        
+        keyIsSet = true;
     }
 
     @Override
     public void generateKey() {
         cipher.generateKey();
         keyArea0.setText(String.valueOf(symmetricCipher.getKey()));
+
+        message("Key generated!");
+        keyIsSet = true;
     }
 }
