@@ -56,6 +56,13 @@ public abstract class AlgoGui<T> {
         c.setBorder(new EmptyBorder(10, 10, 10, 10));
     }
 
+    public void addPadding(JScrollPane c) {
+        c.setBorder(BorderFactory.createCompoundBorder(
+            new EmptyBorder(10, 10, 10, 10),
+            BorderFactory.createLineBorder(Color.GRAY)
+        ));
+    }
+
     public void message(String message) {
         JOptionPane.showMessageDialog(parent, message);
     }
