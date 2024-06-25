@@ -4,7 +4,7 @@ import com.bmcomis2018.cryptgui.algos.SymmetricAlgo;
 
 import javax.swing.*;
 
-public class SymmetricAlgoGui<T> extends AlgoGui<T> {
+public class SymmetricAlgoGui<T> extends AlgoGui {
     private SymmetricAlgo<T> symmetricCipher;
 
     public SymmetricAlgoGui(SymmetricAlgo<T> cipher, JFrame parent) {
@@ -32,7 +32,7 @@ public class SymmetricAlgoGui<T> extends AlgoGui<T> {
     @Override
     public void generateKey() {
         cipher.generateKey();
-        keyArea0.setText(String.valueOf(symmetricCipher.getKey()));
+        keyArea0.setText(symmetricCipher.getKeyString());
 
         message("Key generated!");
         keyIsSet = true;

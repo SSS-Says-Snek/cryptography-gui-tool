@@ -6,7 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-public abstract class AlgoGui<T> {
+public abstract class AlgoGui {
     protected JPanel mainPanel = new JPanel();
 
     protected JPanel leftPanel = new JPanel();

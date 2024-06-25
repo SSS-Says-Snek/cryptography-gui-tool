@@ -29,7 +29,7 @@ public class RSA implements AsymmetricAlgo<BigInteger> {
         BigInteger totn = (pmin1.multiply(qmin1)).divide(gcd(pmin1, qmin1));
 
         d = multInv(e, totn);
-        if (d.compareTo(BigInteger.ZERO) == -1) {
+        if (d.compareTo(BigInteger.ZERO) < 0) {
             d = totn.add(d);
         }
 
@@ -100,7 +100,7 @@ public class RSA implements AsymmetricAlgo<BigInteger> {
         if (b.compareTo(BigInteger.ZERO) == 0) return BigInteger.ONE;
 
         BigInteger y = BigInteger.ONE;
-        while (b.compareTo(BigInteger.ONE) == 1) {
+        while (b.compareTo(BigInteger.ONE) > 0) {
             if (b.mod(BigInteger.TWO).equals(BigInteger.ONE)) {
                 y = a.multiply(y).mod(n);
                 b = b.subtract(BigInteger.ONE);

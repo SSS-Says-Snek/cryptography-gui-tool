@@ -4,7 +4,7 @@ import com.bmcomis2018.cryptgui.algos.AsymmetricAlgo;
 
 import javax.swing.*;
 
-public class AsymmetricAlgoGui<T> extends AlgoGui<T> {
+public class AsymmetricAlgoGui<T> extends AlgoGui {
     private JTextArea keyArea1 = new JTextArea();
 
     private AsymmetricAlgo<T> asymmetricCipher;
@@ -19,7 +19,6 @@ public class AsymmetricAlgoGui<T> extends AlgoGui<T> {
     @Override
     public void setKey() { // TODO
         keyIsSet = true;
-        return;
     }
 
     @Override
