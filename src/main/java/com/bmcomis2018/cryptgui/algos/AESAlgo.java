@@ -29,14 +29,14 @@ public class AESAlgo implements SymmetricAlgo<char[]> {
 
     @Override
     public char[] encrypt(char[] plaintext) {
-        char[] ciphertext = AESImpl.encrypt128(plaintext, key);
+        char[] ciphertext = AESImpl.encrypt(plaintext, key);
         return Base64.getEncoder().encodeToString(new String(ciphertext).getBytes()).toCharArray();
     }
 
     @Override
     public char[] decrypt(char[] ciphertext) {
         byte[] bytes = Base64.getDecoder().decode(new String(ciphertext).getBytes());
-        return AESImpl.decrypt128(new String(bytes).toCharArray(), key);
+        return AESImpl.decrypt(new String(bytes).toCharArray(), key);
     }
 
     @Override

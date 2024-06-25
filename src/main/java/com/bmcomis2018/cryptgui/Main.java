@@ -24,9 +24,9 @@ public class Main
 
         SymmetricAlgoGui<Integer> caesar = new SymmetricAlgoGui<>(new CaesarCipher(), frame);
         AsymmetricAlgoGui<BigInteger> rsa = new AsymmetricAlgoGui<>(new RSA(2048), frame);
-        SymmetricAlgoGui<char[]> aes128 =  new SymmetricAlgoGui<>(new AESAlgo(AESImpl.AES_128_KEYLEN), frame);
-        SymmetricAlgoGui<char[]> aes192 =  new SymmetricAlgoGui<>(new AESAlgo(AESImpl.AES_192_KEYLEN), frame);
-        SymmetricAlgoGui<char[]> aes256 =  new SymmetricAlgoGui<>(new AESAlgo(AESImpl.AES_256_KEYLEN), frame);
+        SymmetricAlgoGui<char[]> aes128 = new SymmetricAlgoGui<>(new AESAlgo(AESImpl.AES_128_KEYLEN), frame);
+        SymmetricAlgoGui<char[]> aes192 = new SymmetricAlgoGui<>(new AESAlgo(AESImpl.AES_192_KEYLEN), frame);
+        SymmetricAlgoGui<char[]> aes256 = new SymmetricAlgoGui<>(new AESAlgo(AESImpl.AES_256_KEYLEN), frame);
 
         cryptAlgorithmOptions.addTab("Caesar Cipher", caesar.getMainPanel());
         cryptAlgorithmOptions.addTab("RSA 2048", rsa.getMainPanel());

@@ -286,44 +286,34 @@ public class AESImpl {
         return plaintext;
     }
 
-    public static char[] encrypt128(char[] plaintext, char[] key) {
-        assert key.length / 4 == AES_128_KEYLEN;
-        return encryptGeneric(plaintext, key, AES_128_KEYLEN, AES_128_ROUNDS);
+    public static char[] encrypt(char[] plaintext, char[] key) {
+        if (key.length / 4 == AES_128_KEYLEN) return encryptGeneric(plaintext, key, AES_128_KEYLEN, AES_128_ROUNDS);
+        else if (key.length / 4 == AES_192_KEYLEN) return encryptGeneric(plaintext, key, AES_192_KEYLEN, AES_192_ROUNDS);
+        else if (key.length / 4 == AES_256_KEYLEN) return encryptGeneric(plaintext, key, AES_256_KEYLEN, AES_256_ROUNDS);
+        else {
+            System.err.println("!!!!!");
+            return new char[0];
+        }
     }
 
-    public static char[] encrypt192(char[] plaintext, char[] key) {
-        assert key.length / 4 == AES_192_KEYLEN;
-        return encryptGeneric(plaintext, key, AES_192_KEYLEN, AES_192_ROUNDS);
-    }
-
-    public static char[] encrypt256(char[] plaintext, char[] key) {
-        assert key.length / 4 == AES_256_KEYLEN;
-        return encryptGeneric(plaintext, key, AES_256_KEYLEN, AES_256_ROUNDS);
-    }
-
-    public static char[] decrypt128(char[] ciphertext, char[] key) {
-        assert key.length / 4 == AES_128_KEYLEN;
-        return decryptGeneric(ciphertext, key, AES_128_KEYLEN, AES_128_ROUNDS);
-    }
-
-    public static char[] decrypt192(char[] ciphertext, char[] key) {
-        assert key.length / 4 == AES_192_KEYLEN;
-        return decryptGeneric(ciphertext, key, AES_192_KEYLEN, AES_192_ROUNDS);
-    }
-
-    public static char[] decrypt256(char[] ciphertext, char[] key) {
-        assert key.length / 4 == AES_256_KEYLEN;
-        return decryptGeneric(ciphertext, key, AES_256_KEYLEN, AES_256_ROUNDS);
+    public static char[] decrypt(char[] ciphertext, char[] key) {
+        if (key.length / 4 == AES_128_KEYLEN) return decryptGeneric(ciphertext, key, AES_128_KEYLEN, AES_128_ROUNDS);
+        else if (key.length / 4 == AES_192_KEYLEN) return decryptGeneric(ciphertext, key, AES_192_KEYLEN, AES_192_ROUNDS);
+        else if (key.length / 4 == AES_256_KEYLEN) return decryptGeneric(ciphertext, key, AES_256_KEYLEN, AES_256_ROUNDS);
+        else {
+            System.err.println("!!!!!");
+            return new char[0];
+        }
     }
 
     public static void main(String[] args) {
         char[] e = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
         char[] plain = {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '2', '2', '2'};
-        char[] ciphere = encrypt256(plain, e);
+        char[] ciphere = encrypt(plain, e);
         stupidPrint(ciphere);
 
 //        char[] plainHopefully = invCipher(Arrays.copyOfRange(ciphere, BLOCK_SIZE, ciphere.length), g, 10);
-        char[] plainHope = decrypt256(ciphere, e);
+        char[] plainHope = decrypt(ciphere, e);
         stupidPrint(plainHope);
     }
 }
